@@ -1,4 +1,6 @@
 import React, { useState, useRef } from "react";
+import { Button, TextField, Typography, Paper, Box } from "@mui/material";
+import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 
 function Product() {
   const [productName, setProductName] = useState("");
@@ -11,16 +13,20 @@ function Product() {
 
   const handleProductSubmit = (e) => {
     e.preventDefault();
-
     console.log("Product Name:", productName);
+    console.log("Description:", description);
     if (photo) {
       console.log("Photo Name:", photo.name);
     } else {
       console.log("Photo: No photo selected");
     }
-    console.log("Description:", description);
     console.log("Quantity:", quantity);
     console.log("Price:", price);
+    setProductName("");
+    setDescription("");
+    setPhoto(null);
+    setQuantity("");
+    setPrice("");
   };
 
   const handlePhotoUpload = (e) => {
@@ -34,8 +40,8 @@ function Product() {
     setProductName("");
     setDescription("");
     setPhoto(null);
-    setQuantity(""); // Reset quantity
-    setPrice(""); // Reset price
+    setQuantity("");
+    setPrice("");
   };
 
   const triggerFileInput = () => {
@@ -43,8 +49,15 @@ function Product() {
   };
 
   return (
-    <div>
-      <h2>New Product</h2>
+    <Box
+      component={Paper}
+      p={3}
+      mt={2}
+      style={{ maxWidth: "400px", margin: "20px auto" }}
+    >
+      <Typography variant="h5" mb={2}>
+        New Product
+      </Typography>
 
       <form onSubmit={handleProductSubmit}>
         <input
@@ -55,41 +68,63 @@ function Product() {
           style={{ display: "none" }}
         />
 
-        <button type="button" onClick={triggerFileInput}>
-          Upload Photo
-        </button>
-        {photo && <p>Selected Photo: {photo.name}</p>}
+        <Box display="flex" alignItems="center" mb={2}>
+          <Button
+            variant="outlined"
+            startIcon={<PhotoCameraIcon />}
+            component="label"
+            onClick={triggerFileInput}
+          >
+            Upload Photo
+          </Button>
+          {photo && <Typography ml={2}>{photo.name}</Typography>}
+        </Box>
 
-        <input
-          type="text"
-          placeholder="Product Name"
+        <TextField
+          fullWidth
+          variant="outlined"
+          margin="normal"
+          label="Product Name"
           value={productName}
           onChange={(e) => setProductName(e.target.value)}
         />
-        <input
-          type="text"
-          placeholder="Description"
+        <TextField
+          fullWidth
+          variant="outlined"
+          margin="normal"
+          label="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <input
+        <TextField
+          fullWidth
+          variant="outlined"
+          margin="normal"
           type="number"
-          placeholder="Quantity"
+          label="Quantity"
           value={quantity}
           onChange={(e) => setQuantity(e.target.value)}
         />
-        <input
+        <TextField
+          fullWidth
+          variant="outlined"
+          margin="normal"
           type="number"
-          placeholder="Price"
+          label="Price"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
-        <button type="submit">SUBMIT</button>
-        <button type="button" onClick={handleCancel}>
-          CANCEL
-        </button>
+
+        <Box mt={2} display="flex" justifyContent="space-between">
+          <Button variant="outlined" type="submit">
+            SUBMIT
+          </Button>
+          <Button variant="outlined" onClick={handleCancel}>
+            CANCEL
+          </Button>
+        </Box>
       </form>
-    </div>
+    </Box>
   );
 }
 

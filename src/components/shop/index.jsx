@@ -1,4 +1,6 @@
 import React, { useState, useRef } from "react";
+import { Button, TextField, Typography, Paper, Box } from "@mui/material";
+import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 
 function Shop() {
   const [shopName, setShopName] = useState("");
@@ -9,14 +11,16 @@ function Shop() {
 
   const handleShopSubmit = (e) => {
     e.preventDefault();
-
     console.log("Shop Name:", shopName);
+    console.log("Description:", description);
     if (photo) {
       console.log("Photo Name:", photo.name);
     } else {
       console.log("Photo: No photo selected");
     }
-    console.log("Description:", description);
+    setShopName("");
+    setDescription("");
+    setPhoto(null);
   };
 
   const handlePhotoUpload = (e) => {
@@ -37,8 +41,14 @@ function Shop() {
   };
 
   return (
-    <div>
-      <h2>New Shop</h2>
+    <Box
+      component={Paper}
+      p={3}
+      style={{ maxWidth: "400px", margin: "20px auto" }}
+    >
+      <Typography variant="h5" mb={2}>
+        New Shop
+      </Typography>
 
       <form onSubmit={handleShopSubmit}>
         <input
@@ -49,30 +59,45 @@ function Shop() {
           style={{ display: "none" }}
         />
 
-        <button type="button" onClick={triggerFileInput}>
-          Upload Photo
-        </button>
-        {/* Display photo name if photo is selected */}
-        {photo && <p>Selected Photo: {photo.name}</p>}
+        <Box display="flex" alignItems="center" mb={2}>
+          <Button
+            variant="outlined"
+            startIcon={<PhotoCameraIcon />}
+            component="label"
+            onClick={triggerFileInput}
+          >
+            UPLOAD LOGO
+          </Button>
+          {photo && <Typography ml={2}>{photo.name}</Typography>}
+        </Box>
 
-        <input
-          type="text"
-          placeholder="Shop Name"
+        <TextField
+          fullWidth
+          variant="outlined"
+          margin="normal"
+          label="Name"
           value={shopName}
           onChange={(e) => setShopName(e.target.value)}
         />
-        <input
-          type="text"
-          placeholder="Description"
+        <TextField
+          fullWidth
+          variant="outlined"
+          margin="normal"
+          label="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <button type="submit">SUBMIT</button>
-        <button type="button" onClick={handleCancel}>
-          CANCEL
-        </button>
+
+        <Box mt={2} display="flex" justifyContent="space-between">
+          <Button variant="outlined" type="submit">
+            SUBMIT
+          </Button>
+          <Button variant="outlined" onClick={handleCancel}>
+            CANCEL
+          </Button>
+        </Box>
       </form>
-    </div>
+    </Box>
   );
 }
 
